@@ -48,7 +48,7 @@ const services = [
 ];
 
 const OurService = () => {
-    console.log(services)
+  
     return (
         <div className="my-20 bg-secondary rounded-2xl">
             <h1 className="text-white text-4xl font-bold text-center pt-20">Our Services</h1>

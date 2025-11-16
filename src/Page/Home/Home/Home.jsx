@@ -2,6 +2,8 @@ import React from 'react';
 import Banner from '../Banner/Banner';
 import HowItIsWork from '../HowItIsWork/HowItIsWork';
 import OurService from './Service/OurService';
+import Sponsor from './Sponsor/Sponsor';
+import SupportService from './SupportService/SupportService';
 
 const Home = () => {
     return (
@@ -15,6 +17,10 @@ const Home = () => {
           <section>
             <OurService></OurService>
           </section>
+          <section>
+            <Sponsor></Sponsor>
+          </section>
+          <SupportService></SupportService>
         </div>
     );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Service = ({data}) => {
-    console.log(data)
+   
     return (
         <div className='bg-white p-8 flex flex-col items-center justify-center rounded-2xl hover:bg-primary'>
         <img src={data.img} alt="" />

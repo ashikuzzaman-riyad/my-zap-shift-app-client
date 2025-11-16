@@ -7,17 +7,17 @@ import Home from '../Page/Home/Home/Home';
 
 const RootLayout = () => {
     return (
-        <div className='container mx-auto flex flex-col min-h-screen'>
-            <header>
+        <div className=' flex flex-col min-h-screen bg-[#EAECED]' >
+            <header className='container mx-auto'>
                 <Navbar></Navbar>
             </header>
-           <section>
+           <section className='container mx-auto'>
             <Home></Home>
            </section>
-           <main className='flex-1'>
+           <main className='flex-1 container mx-auto'>
             <Outlet></Outlet> 
            </main>
-          <section className=' px-10 '>
+          <section className=' px-10 container mx-auto'>
              <Footer></Footer>
           </section>
         </div>
