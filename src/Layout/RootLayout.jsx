@@ -11,9 +11,7 @@ const RootLayout = () => {
             <header className='container mx-auto'>
                 <Navbar></Navbar>
             </header>
-           <section className='container mx-auto'>
-            <Home></Home>
-           </section>
+           
            <main className='flex-1 container mx-auto'>
             <Outlet></Outlet> 
            </main>
