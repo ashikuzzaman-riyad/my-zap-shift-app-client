@@ -6,6 +6,12 @@ import AboutUs from "../Page/AboutUS/AboutUs";
 import AuthLayout from "../Layout/AuthLayout";
 import Login from "../Page/Auth/Login/Login";
 import Register from "../Page/Auth/Register/Register";
+import PrivetRoute from "./PrivetRoute";
+import Rider from "../Page/Rider/Rider";
+import Parcel from "../Page/AddParcel/Parcel";
+import DashboardLayout from "../Layout/DashboardLayout";
+import MyParcel from "../Page/MyDashboard/MyParcel";
+
 
 const router = createBrowserRouter([
   {
@@ -25,6 +31,15 @@ const router = createBrowserRouter([
         path: "/about-us",
         Component: AboutUs,
       },
+      {
+        path: "/pricing",
+        element: <PrivetRoute><Parcel></Parcel></PrivetRoute>,
+        loader: () => fetch("/warehouses.json").then((res) => res.json()),
+      },
+      {
+        path: "/rider",
+       element:<PrivetRoute><Rider></Rider></PrivetRoute>
+      },
     ],
   },
   {
@@ -41,5 +56,15 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: 'dashboard',
+   element: <PrivetRoute><DashboardLayout></DashboardLayout></PrivetRoute>,
+    children:[
+      {
+      path: 'my-parcels',
+      Component: MyParcel
+      }
+    ]
+  }
 ]);
 export default router;

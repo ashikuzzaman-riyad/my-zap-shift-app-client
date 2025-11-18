@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { TbXboxX } from "react-icons/tb";
 import { CiMenuBurger } from "react-icons/ci";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 import Navlink from "./Navlink";
 import Logo from "../../../Logo/Logo";
 import { BsArrowUpRightCircleFill } from "react-icons/bs";
@@ -30,32 +30,27 @@ const navData = [
     path: "/pricing",
   },
   {
-    id: 5,
-    name: "Blog",
-    path: "/blog",
-  },
-  {
-    id: 6,
-    name: "Contact",
-    path: "/contact",
+    name: "Be a Rider",
+    path: "/rider",
   },
 ];
 
 const Navbar = () => {
   const link = navData.map((data) => (
     <Navlink data={data} key={data.id}></Navlink>
+    
   ));
   const [open, setOpen] = useState(false);
-  const {user, LogOut} = useAuth()
-  const handleLogOut = () =>{
+  const { user, LogOut } = useAuth();
+  const handleLogOut = () => {
     LogOut()
-    .then(res =>{
-      console.log(res.user)
-
-    }).catch(error =>{
-      console.logI(error)
-    })
-  }
+      .then((res) => {
+        console.log(res.user);
+      })
+      .catch((error) => {
+        console.logI(error);
+      });
+  };
   return (
     <nav>
       <div className="flex justify-between px-5  items-center shadow py-2 text-black rounded-2xl ">
@@ -68,53 +63,77 @@ const Navbar = () => {
             )}
           </span>
           <ul
-            className={`'md:hidden absolute duration-1000 bg-amber-400 p-5 text-black ${
+            className={`'md:hidden absolute z-50 duration-1000 bg-amber-400 p-5 text-black ${
               open ? "top-10" : "-top-200"
             }`}
           >
             {link}
+            {user && <>
+            <NavLink className={
+          ({ isActive }) =>
+            isActive
+              ? "text-emerald-600 underline" 
+              : "hover:text-emerald-500 hover:underline" 
+        } to='/dashboard/my-parcels'>MY-Parcel</NavLink>
+            </>}
           </ul>
           <Link to="/">
-           <div className="hidden md:block">
-             <Logo></Logo>
-           </div>
+            <div className="hidden md:block">
+              <Link to="/">
+                <Logo />
+              </Link>
+            </div>
           </Link>
-         
         </div>
         <div>
-          <ul className="md:flex gap-6 font-semibold hidden">{link}</ul>
+          <ul className="md:flex gap-6 font-semibold hidden">{link}
+            {user && <>
+            <NavLink className={
+          ({ isActive }) =>
+            isActive
+              ? "text-emerald-600 underline" 
+              : "hover:text-emerald-500 hover:underline" 
+        } to='/dashboard/my-parcels'>MY-Parcel</NavLink>
+            </>}
+          </ul>
         </div>
-       {
-        user?
-        <div className="flex items-center gap-2.5 md:gap-7 ">
-
-     <button onClick={handleLogOut}  className="p-2 bg-primary md:px-5 md:p-3 rounded-md text-[#1F1F1F] 
+        {user ? (
+          <div className="flex items-center gap-2.5 md:gap-7 ">
+            <button
+              onClick={handleLogOut}
+              className="p-2 bg-primary md:px-5 md:p-3 rounded-md text-[#1F1F1F] 
      transition  hover:shadow-lg"
-          >
-        LogOut
-          </button>
-          <Link to='/' className="p-2 md:p-3 md:px-5 border border-gray-700 rounded-md 
-    transition hover:bg-gray-800 hover:text-white">Be a Rider</Link>
-        </div>
-     :  <div className="flex items-center gap-2.5 md:gap-7 ">
-          <Link to='/login'
-            className="p-2 md:p-3 md:px-5 border border-gray-700 rounded-md 
+            >
+              LogOut
+            </button>
+            <Link
+              to="/"
+              className="p-2 md:p-3 md:px-5 border border-gray-700 rounded-md 
     transition hover:bg-gray-800 hover:text-white"
-          >
-            Sign In
-          </Link>
+            >
+              Be a Rider
+            </Link>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2.5 md:gap-7 ">
+            <Link
+              to="/login"
+              className="p-2 md:p-3 md:px-5 border border-gray-700 rounded-md 
+    transition hover:bg-gray-800 hover:text-white"
+            >
+              Sign In
+            </Link>
 
-          <Link to='/register'
-            className="p-2 bg-primary md:px-5 md:p-3 rounded-md text-[#1F1F1F] 
+            <Link
+              to="/register"
+              className="p-2 bg-primary md:px-5 md:p-3 rounded-md text-[#1F1F1F] 
     transition  hover:shadow-lg"
-          >
-            Sign Up
-          </Link>
+            >
+              Sign Up
+            </Link>
             <BsArrowUpRightCircleFill className="relative right-7" size={40} />
-         
-    
-        </div>
-       }
+          </div>
+        )}
       </div>
     </nav>
   );

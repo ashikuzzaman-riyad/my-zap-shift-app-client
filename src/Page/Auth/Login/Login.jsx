@@ -1,10 +1,13 @@
 import React from "react";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../../hook/useAuth";
 import { useForm } from "react-hook-form";
 import SocalLogin from "../SocalLogin/SocalLogin";
 
 const Login = () => {
+  const location = useLocation()
+  
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -16,6 +19,7 @@ const Login = () => {
     signInUser(data.email, data.password)
       .then((res) => {
         console.log(res.user);
+        navigate(location.state || '/')
       })
       .catch((error) => {
         console.log(error);
@@ -77,7 +81,7 @@ const Login = () => {
         </div>
         <p className="mt-3 text-sm">
           Don’t have any account?
-          <Link className="text-green-500 " to="/register">
+          <Link state={location.state} className="text-green-500 " to="/register">
             Register
           </Link>
         </p>

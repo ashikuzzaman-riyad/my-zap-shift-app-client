@@ -18,7 +18,7 @@ const Banner = () => {
           {/* Buttons overlay */}
           <div className="absolute grid  top-138 -left-5 transform -translate-y-1/2  gap-4">
           
-             <p className="w-[600px] leading-5">Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal packages to business shipments — we deliver on time, every time.</p>
+             <p className="w-[600px] leading-5 ml-10">Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal packages to business shipments — we deliver on time, every time.</p>
           
            <div className="flex items-center justify-center">
              <button className="bg-primary text-[#1F1F1F] px-4 py-2 rounded-md  transition mr-7 hover:bg-amber-400">

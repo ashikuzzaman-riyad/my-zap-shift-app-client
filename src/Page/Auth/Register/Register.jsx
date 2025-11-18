@@ -1,12 +1,14 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { RxAvatar } from "react-icons/rx";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../../hook/useAuth";
 import SocalLogin from "../SocalLogin/SocalLogin";
 import axios from "axios";
 
 const Register = () => {
+  const location = useLocation()
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -36,6 +38,7 @@ const Register = () => {
           updateUser(userProfile)
             .then(() => {
               console.log("done done done  ...................");
+              navigate(location.state || '/')
             })
             .catch((error) => {
               console.log(error);
@@ -114,7 +117,7 @@ const Register = () => {
         </div>
         <p className="mt-3 text-sm">
           Already have an account?{" "}
-          <Link className="text-green-500 " to="/login">
+          <Link state={location.state} className="text-green-500 " to="/login">
             Login
           </Link>
         </p>
