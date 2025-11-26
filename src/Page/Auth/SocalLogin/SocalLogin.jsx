@@ -1,16 +1,28 @@
 import React from 'react';
 import useAuth from '../../../hook/useAuth';
 import { useLocation, useNavigate } from 'react-router';
+import useSecureAxios from '../../../hook/useSecureAxios';
 
 const SocalLogin = () => {
   const location = useLocation()
   const navigate = useNavigate()
     const { signInGoogle} = useAuth()
+     const axiosSecure = useSecureAxios()
     const handleGoogleSign = () =>{
         signInGoogle()
         .then(res => {
             console.log(res.user)
             navigate(location.state || '/')
+             const userInfo = {
+            email: res.user.email,
+            displayName: res.user.displayName,
+            photoURL: res.user.photoURL,
+          };
+          axiosSecure.post('/users', userInfo)
+          .then(res => {
+            console.log('database update done', res.data)
+          })
+
         }).catch(error =>{
             console.log(error)
         })

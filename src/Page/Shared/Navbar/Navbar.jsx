@@ -30,6 +30,7 @@ const navData = [
     path: "/pricing",
   },
   {
+    id: 5,
     name: "Be a Rider",
     path: "/rider",
   },
@@ -38,7 +39,6 @@ const navData = [
 const Navbar = () => {
   const link = navData.map((data) => (
     <Navlink data={data} key={data.id}></Navlink>
-    
   ));
   const [open, setOpen] = useState(false);
   const { user, LogOut } = useAuth();
@@ -68,33 +68,46 @@ const Navbar = () => {
             }`}
           >
             {link}
-            {user && <>
-            <NavLink className={
-          ({ isActive }) =>
-            isActive
-              ? "text-emerald-600 underline" 
-              : "hover:text-emerald-500 hover:underline" 
-        } to='/dashboard/my-parcels'>MY-Parcel</NavLink>
-            </>}
+            {user && (
+              <>
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-emerald-600 underline"
+                      : "hover:text-emerald-500 hover:underline"
+                  }
+                  to="/dashboard/my-parcels"
+                >
+                  MY-Parcel
+                </NavLink>
+              </>
+            )}
           </ul>
           <Link to="/">
             <div className="hidden md:block">
-              <Link to="/">
+              <div>
                 <Logo />
-              </Link>
+              </div>
             </div>
           </Link>
         </div>
         <div>
-          <ul className="md:flex gap-6 font-semibold hidden">{link}
-            {user && <>
-            <NavLink className={
-          ({ isActive }) =>
-            isActive
-              ? "text-emerald-600 underline" 
-              : "hover:text-emerald-500 hover:underline" 
-        } to='/dashboard/my-parcels'>MY-Parcel</NavLink>
-            </>}
+          <ul className="md:flex gap-6 font-semibold hidden">
+            {link}
+            {user && (
+              <>
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-emerald-600 underline"
+                      : "hover:text-emerald-500 hover:underline"
+                  }
+                  to="/dashboard/my-parcels"
+                >
+                  MY-Parcel
+                </NavLink>
+              </>
+            )}
           </ul>
         </div>
         {user ? (

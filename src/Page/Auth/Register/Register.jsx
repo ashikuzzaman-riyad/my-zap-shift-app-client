@@ -5,10 +5,12 @@ import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../../hook/useAuth";
 import SocalLogin from "../SocalLogin/SocalLogin";
 import axios from "axios";
+import useSecureAxios from "../../../hook/useSecureAxios";
 
 const Register = () => {
-  const location = useLocation()
-  const navigate = useNavigate()
+  const location = useLocation();
+  const navigate = useNavigate();
+  const axiosSecure = useSecureAxios()
   const {
     register,
     handleSubmit,
@@ -19,8 +21,8 @@ const Register = () => {
     console.log(data.photo[0]);
     const profileImg = data.photo[0];
     registerUser(data.email, data.password)
-      .then((res) => {
-        console.log(res.user);
+      .then(() => {
+   
         // store the image and get photo url
         const formData = new FormData();
         formData.append("image", profileImg);
@@ -29,16 +31,29 @@ const Register = () => {
         }`;
 
         axios.post(image_API_URL, formData).then((res) => {
-          console.log("after image upload", res.data);
+          const photoURL = res.data.data.url;
+          // send user data to database
+          const userInfo = {
+            email: data.email,
+            displayName: data.name,
+            photoURL: photoURL,
+          };
+          axiosSecure.post('/users', userInfo)
+          .then(res =>{
+            if(res.data.insertedId){
+              console.log('user send to database ')
+            }
+          })
+
           // update user profile
           const userProfile = {
             displayName: data.name,
-            photoURL: res.data.data.url,
+            photoURL: photoURL,
           };
           updateUser(userProfile)
             .then(() => {
-              console.log("done done done  ...................");
-              navigate(location.state || '/')
+         
+              navigate(location.state || "/");
             })
             .catch((error) => {
               console.log(error);

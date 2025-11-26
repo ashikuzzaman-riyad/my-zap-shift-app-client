@@ -50,6 +50,7 @@ const router = createBrowserRouter([
             <Rider></Rider>
           </PrivetRoute>
         ),
+        loader: () => fetch("/warehouses.json").then((res) => res.json()),
       },
     ],
   },

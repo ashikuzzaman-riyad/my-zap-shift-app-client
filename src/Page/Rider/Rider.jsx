@@ -1,186 +1,249 @@
 import React from "react";
 import riderLogo from "../../assets/agent-pending.png";
+import { useForm, useWatch } from "react-hook-form";
+import useAuth from "../../hook/useAuth";
+import useSecureAxios from "../../hook/useSecureAxios";
+import { useLoaderData } from "react-router";
 
 const Rider = () => {
+  const serviceCenter = useLoaderData();
+  const axiosSecure = useSecureAxios();
+  const { user } = useAuth();
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
+
+  const duplicateRegion = serviceCenter.map((c) => c.region);
+  const region = [...new Set(duplicateRegion)];
+  console.log(region);
+  const riderRegion = useWatch({ control, name: "riderRegion" });
+  const districtsByDistricts = (region) => {
+    const regionDistricts = serviceCenter.filter((c) => c.region === region);
+    const districts = regionDistricts.map((d) => d.district);
+    return districts;
+  };
+  const onSubmit = (data) => {
+    console.log("Form data:", data);
+    // You can call your API here to send data
+    // Reset form after submission
+  };
+
   return (
-    <div className="  flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="container mx-auto w-full bg-white shadow-xl rounded-3xl p-8 sm:p-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Left Column: Text and Form */}
-          <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Be a <span className="text-green-600">Rider</span> 🛵
-            </h1>
-            <p className="text-gray-600 mb-10 text-lg">
-              Enjoy fast, reliable parcel delivery with real-time tracking and
-              zero hassle. From personal packages to business shipments — **we
-              deliver on time, every time.**
-            </p>
+    <div className="min-h-screen mt-10 flex items-center justify-center p-4">
+      <div className="bg-white container w-full p-8 shadow-2xl rounded-lg">
+        {/* Header */}
+        <header className="mb-8 border-b border-dashed border-blue-200 pb-6">
+          <h1 className="text-3xl font-extrabold text-gray-800 mb-2">
+            Be a Rider 🛵
+          </h1>
+          <p className="text-gray-500 max-w-xl text-sm">
+           Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal packages to business shipments — we deliver on time, every time.
+          </p>
+        </header>
 
-            {/* --- Form Section --- */}
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-              Tell us about yourself
-            </h2>
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {/* Name */}
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Your Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    placeholder="Your Name"
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 transition duration-150 ease-in-out"
-                  />
-                </div>
+        {/* Form */}
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-10"
+        >
+          {/* Left side inputs */}
+          <div className="lg:pr-10">
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Your Name
+              </label>
+              <input
+                type="text"
+                placeholder="Your Name"
+                {...register("name", { required: "Name is required" })}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+              />
+              {errors.name && (
+                <p className="text-red-500 text-sm">{errors.name.message}</p>
+              )}
+            </div>
 
-                {/* Age */}
-                <div>
-                  <label
-                    htmlFor="age"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Your age
-                  </label>
-                  <input
-                    type="number"
-                    name="age"
-                    id="age"
-                    placeholder="Your age"
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 transition duration-150 ease-in-out"
-                  />
-                </div>
-              </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Driving License Number
+              </label>
+              <input
+                type="text"
+                placeholder="Driving License Number"
+                {...register("drivingLicense", {
+                  required: "Driving License Number is required",
+                })}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+              />
+              {errors.drivingLicense && (
+                <p className="text-red-500 text-sm">
+                  {errors.drivingLicense.message}
+                </p>
+              )}
+            </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {/* Email */}
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Your Email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="Your Email"
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 transition duration-150 ease-in-out"
-                  />
-                </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <input
+                type="email"
+                placeholder="Email"
+                {...register("email", { required: "Email is required" })}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email.message}</p>
+              )}
+            </div>
 
-                {/* Region */}
-                <div>
-                  <label
-                    htmlFor="region"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Your Region
-                  </label>
-                  <select
-                    id="region"
-                    name="region"
-                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm shadow-sm cursor-pointer transition duration-150 ease-in-out"
-                  >
-                    <option>Select your region</option>
-                    <option>Region A</option>
-                    <option>Region B</option>
-                    <option>Region C</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {/* NID No */}
-                <div>
-                  <label
-                    htmlFor="nid"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    NID No
-                  </label>
-                  <input
-                    type="text"
-                    name="nid"
-                    id="nid"
-                    placeholder="NID"
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 transition duration-150 ease-in-out"
-                  />
-                </div>
-
-                {/* Contact */}
-                <div>
-                  <label
-                    htmlFor="contact"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Contact
-                  </label>
-                  <input
-                    type="text"
-                    name="contact"
-                    id="contact"
-                    placeholder="Contact"
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 transition duration-150 ease-in-out"
-                  />
-                </div>
-              </div>
-
-              {/* Warehouse */}
-              <div>
-                <label
-                  htmlFor="warehouse"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Which wire-house you want to work?
+            {/* Region & District */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Region
                 </label>
                 <select
-                  id="warehouse"
-                  name="warehouse"
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm shadow-sm cursor-pointer transition duration-150 ease-in-out"
+                  {...register("riderRegion", {
+                    required: "Region is required",
+                  })}
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
                 >
-                  <option>Select wire-house</option>
-                  <option>Warehouse X</option>
-                  <option>Warehouse Y</option>
-                  <option>Warehouse Z</option>
+                  <option value="">Select Region</option>
+                  {region.map((r, index) => (
+                    <option key={index} value={r}>
+                      {r}
+                    </option>
+                  ))}
                 </select>
+                {errors.region && (
+                  <p className="text-red-500 text-sm">
+                    {errors.region.message}
+                  </p>
+                )}
               </div>
 
-              {/* Submit Button */}
-              <div>
-                <button
-                  type="submit"
-                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-lg font-medium text-gray-800 bg-primary hover:bg-lime-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-500 transition duration-150 ease-in-out"
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  District
+                </label>
+                <select
+                  {...register("RiderDistrict", {
+                    required: "District is required",
+                  })}
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
                 >
-                  Submit
-                </button>
+                  <option value="">Select District</option>
+                  {districtsByDistricts(riderRegion).map((d, index) => (
+                    <option key={index} value={d}>
+                      {d}
+                    </option>
+                  ))}
+                </select>
+                {errors.district && (
+                  <p className="text-red-500 text-sm">
+                    {errors.district.message}
+                  </p>
+                )}
               </div>
-            </form>
-          </div>
+            </div>
 
-          {/* Right Column: Image (Stylized) */}
-          <div className="hidden lg:flex items-center justify-center relative">
-            {/* The image is a stylized representation of a rider on a moped with a package */}
-            <div
-              className="absolute inset-0 bg-white opacity-40 rounded-xl"
-              aria-hidden="true"
-            ></div>
-            <div className="relative w-full max-w-md">
-              <img
-                src={riderLogo} // Placeholder for your image file
-                alt="Delivery Rider on a Moped"
-                className="w-full h-auto object-contain"
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                NID No
+              </label>
+              <input
+                type="text"
+                placeholder="NID"
+                {...register("nid", { required: "NID is required" })}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+              />
+              {errors.nid && (
+                <p className="text-red-500 text-sm">{errors.nid.message}</p>
+              )}
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                placeholder="Phone Number"
+                {...register("phone", { required: "Phone number is required" })}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+              />
+              {errors.phone && (
+                <p className="text-red-500 text-sm">{errors.phone.message}</p>
+              )}
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Bike Brand Model and Year
+              </label>
+              <input
+                type="text"
+                placeholder="Bike Brand Model and Year"
+                {...register("bikeModelYear", {
+                  required: "Bike info is required",
+                })}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+              />
+              {errors.bikeModelYear && (
+                <p className="text-red-500 text-sm">
+                  {errors.bikeModelYear.message}
+                </p>
+              )}
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Bike Registration Number
+              </label>
+              <input
+                type="text"
+                placeholder="Bike Registration Number"
+                {...register("bikeRegistrationNumber", {
+                  required: "Registration number is required",
+                })}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+              />
+              {errors.bikeRegistrationNumber && (
+                <p className="text-red-500 text-sm">
+                  {errors.bikeRegistrationNumber.message}
+                </p>
+              )}
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700">
+                Tell Us About Yourself
+              </label>
+              <textarea
+                rows="3"
+                placeholder="Tell Us About Yourself"
+                {...register("about")}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
               />
             </div>
+
+            <button
+              type="submit"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-lime-500 hover:bg-lime-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-500"
+            >
+              Submit
+            </button>
           </div>
-        </div>
+
+          {/* Right side image */}
+          <div className="hidden lg:flex items-start justify-center pt-8">
+            <img src={riderLogo} alt="Rider Logo" className="max-w-md" />
+          </div>
+        </form>
       </div>
     </div>
   );

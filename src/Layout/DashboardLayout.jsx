@@ -1,11 +1,13 @@
 import React from "react";
 import { CiDeliveryTruck } from "react-icons/ci";
+import { FaAddressCard } from "react-icons/fa";
 import { Link, NavLink, Outlet } from "react-router";
 
 
 const DashboardLayout = () => {
   return (
-    <div className="drawer lg:drawer-open">
+   <div>
+     <div className="drawer lg:drawer-open container mx-auto">
   <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
   <div className="drawer-content">
     {/* Navbar */}
@@ -48,7 +50,7 @@ const DashboardLayout = () => {
         <li className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="payment history">
 
         <NavLink className="hover:text-green-600" to='/dashboard/payment-history'>
-         <CiDeliveryTruck className="my-1.5 inline-block size-4" />
+         <FaAddressCard  className="my-1.5 inline-block size-4" />
         <span className="is-drawer-close:hidden">Payment history</span>
         </NavLink>
            
@@ -68,6 +70,7 @@ const DashboardLayout = () => {
     </div>
   </div>
 </div>
+   </div>
   );
 };
 
