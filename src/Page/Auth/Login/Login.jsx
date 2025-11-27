@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../../hook/useAuth";
 import { useForm } from "react-hook-form";
@@ -6,7 +6,7 @@ import SocalLogin from "../SocalLogin/SocalLogin";
 
 const Login = () => {
   const location = useLocation()
-  
+   const [loading, setLoading] = useState(false);
   const navigate = useNavigate()
   const {
     register,
@@ -15,9 +15,11 @@ const Login = () => {
   } = useForm();
   const { signInUser } = useAuth();
   const handleSignInUser = (data) => {
+    setLoading(true)
     console.log(data);
     signInUser(data.email, data.password)
       .then((res) => {
+        setLoading(false)
         console.log(res.user);
         navigate(location.state || '/')
       })
@@ -73,11 +75,19 @@ const Login = () => {
             </p>
           )}
           <Link to="/forget">Forget Password?</Link>
-          <input
-            className="border border-gray-200 max-w-3/5 mt-5 py-2 bg-primary"
-            type="submit"
-            value="Login"
-          />
+          <button
+          type="submit"
+          value='Login'
+  disabled={loading}
+  className="border border-gray-200 max-w-3/5 mt-5 py-2 bg-primary flex items-center justify-center"
+>
+  {loading ? (
+    <span className="loading loading-spinner loading-sm"></span>
+  ) : (
+    "Login"
+  )}
+</button>
+
         </div>
         <p className="mt-3 text-sm">
           Don’t have any account?

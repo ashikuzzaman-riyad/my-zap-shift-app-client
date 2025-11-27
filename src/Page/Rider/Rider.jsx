@@ -4,11 +4,13 @@ import { useForm, useWatch } from "react-hook-form";
 import useAuth from "../../hook/useAuth";
 import useSecureAxios from "../../hook/useSecureAxios";
 import { useLoaderData } from "react-router";
+import Swal from "sweetalert2";
 
 const Rider = () => {
   const serviceCenter = useLoaderData();
   const axiosSecure = useSecureAxios();
   const { user } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -27,8 +29,17 @@ const Rider = () => {
   };
   const onSubmit = (data) => {
     console.log("Form data:", data);
-    // You can call your API here to send data
-    // Reset form after submission
+    axiosSecure.post("/riders", data).then((res) => {
+      if (res.data.insertedId) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Your application has ben submit",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+    });
   };
 
   return (
@@ -40,7 +51,9 @@ const Rider = () => {
             Be a Rider 🛵
           </h1>
           <p className="text-gray-500 max-w-xl text-sm">
-           Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal packages to business shipments — we deliver on time, every time.
+            Enjoy fast, reliable parcel delivery with real-time tracking and
+            zero hassle. From personal packages to business shipments — we
+            deliver on time, every time.
           </p>
         </header>
 
@@ -57,6 +70,7 @@ const Rider = () => {
               </label>
               <input
                 type="text"
+                defaultValue={user.displayName}
                 placeholder="Your Name"
                 {...register("name", { required: "Name is required" })}
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
@@ -91,6 +105,7 @@ const Rider = () => {
               </label>
               <input
                 type="email"
+                defaultValue={user.email}
                 placeholder="Email"
                 {...register("email", { required: "Email is required" })}
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"

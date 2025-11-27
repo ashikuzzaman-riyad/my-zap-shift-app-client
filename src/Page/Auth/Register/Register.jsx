@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { RxAvatar } from "react-icons/rx";
 import { Link, useLocation, useNavigate } from "react-router";
@@ -10,7 +10,9 @@ import useSecureAxios from "../../../hook/useSecureAxios";
 const Register = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const axiosSecure = useSecureAxios()
+  const axiosSecure = useSecureAxios();
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -18,11 +20,11 @@ const Register = () => {
   } = useForm();
   const { registerUser, updateUser } = useAuth();
   const handleRegister = (data) => {
+    setLoading(true);
     console.log(data.photo[0]);
     const profileImg = data.photo[0];
     registerUser(data.email, data.password)
       .then(() => {
-   
         // store the image and get photo url
         const formData = new FormData();
         formData.append("image", profileImg);
@@ -38,12 +40,11 @@ const Register = () => {
             displayName: data.name,
             photoURL: photoURL,
           };
-          axiosSecure.post('/users', userInfo)
-          .then(res =>{
-            if(res.data.insertedId){
-              console.log('user send to database ')
+          axiosSecure.post("/users", userInfo).then((res) => {
+            if (res.data.insertedId) {
+              console.log("user send to database ");
             }
-          })
+          });
 
           // update user profile
           const userProfile = {
@@ -52,7 +53,7 @@ const Register = () => {
           };
           updateUser(userProfile)
             .then(() => {
-         
+              setLoading(false);
               navigate(location.state || "/");
             })
             .catch((error) => {
@@ -124,11 +125,17 @@ const Register = () => {
               at list 1 uppercase 1 lowercase 1 number and spacial character
             </p>
           )}
-          <input
-            className="border border-gray-200 max-w-3/5 mt-5 py-2 bg-primary"
-            type="submit"
-            value="Register"
-          />
+          <button
+          type="submit"
+            disabled={loading}
+            className="border border-gray-200 max-w-3/5 mt-5 py-2 bg-primary flex items-center justify-center"
+          >
+            {loading ? (
+              <span className="loading loading-spinner loading-sm"></span>
+            ) : (
+              "Register"
+            )}
+          </button>
         </div>
         <p className="mt-3 text-sm">
           Already have an account?{" "}
