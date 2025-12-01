@@ -84,7 +84,8 @@ const ApproveRider = () => {
               <th className="p-3 border">Region</th>
               <th className="p-3 border">District</th>
               <th className="p-3 border">Bike</th>
-              <th className="p-3 border">Status</th>
+              <th className="p-3 border">Application Status</th>
+              <th className="p-3 border">Work Status</th>
               <th className="p-3 border">Action</th>
             </tr>
           </thead>
@@ -117,6 +118,21 @@ const ApproveRider = () => {
                     }`}
                   >
                     {rider.status}
+                  </span>
+                </td>
+                <td className="p-3 border">
+                  <span
+                    className={`px-3 py-1 rounded text-white text-sm ${
+                      rider.workStatus === "available"
+                        ? "bg-yellow-500"
+                        : rider.status === "approved"
+                        ? "bg-green-600"
+                        : rider.status === "rejected"
+                        ? "bg-red-600"
+                        : "bg-gray-500" 
+                    }`}
+                  >
+                    {rider.workStatus}
                   </span>
                 </td>
                 <td className="p-3 border">

@@ -70,6 +70,7 @@ const MyParcel = () => {
               <th>Cost</th>
               <th>Payment status</th>
               <th>develavary status</th>
+              <th>TrackingId</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -92,7 +93,8 @@ const MyParcel = () => {
                     </button>
                   )}
                 </td>
-                <td>{parcel.develavaryStatus}</td>
+                <td className="text-green-900">{parcel.deliveryStatus}</td>
+                <td>{parcel.trackingId}</td>
                 <th>
                   <button className="btn btn-square hover:bg-primary">
                     <FaEdit></FaEdit>

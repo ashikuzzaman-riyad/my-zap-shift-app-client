@@ -48,7 +48,7 @@ const Navbar = () => {
         console.log(res.user);
       })
       .catch((error) => {
-        console.logI(error);
+        console.log(error);
       });
   };
   return (
@@ -120,7 +120,7 @@ const Navbar = () => {
               LogOut
             </button>
             <Link
-              to="/"
+              to="/rider"
               className="p-2 md:p-3 md:px-5 border border-gray-700 rounded-md 
     transition hover:bg-gray-800 hover:text-white"
             >

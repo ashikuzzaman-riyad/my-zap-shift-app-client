@@ -1,9 +1,13 @@
 import React from "react";
 import { CiDeliveryTruck } from "react-icons/ci";
-import { FaAddressCard, FaMotorcycle } from "react-icons/fa";
+import { PiPersonSimpleBikeBold } from "react-icons/pi";
+
+import { FaAddressCard, FaMotorcycle, FaUser, FaUsers } from "react-icons/fa";
 import { Link, NavLink, Outlet } from "react-router";
+import useRole from "../hook/useRole";
 
 const DashboardLayout = () => {
+  const { role } = useRole();
   return (
     <div>
       <div className="drawer lg:drawer-open container mx-auto">
@@ -101,21 +105,56 @@ const DashboardLayout = () => {
                   </span>
                 </NavLink>
               </li>
-              {/* rider application */}
-              <li
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Approve  Rider "
-              >
-                <NavLink
-                  className="hover:text-green-600"
-                  to="/dashboard/approveRider"
-                >
-                  <FaMotorcycle className="my-1.5 inline-block size-4" />
-                  <span className="is-drawer-close:hidden">
-                  Approve  Rider 
-                  </span>
-                </NavLink>
-              </li>
+
+              {role === "admin" && (
+                <>
+                  {/* rider application */}
+                  <li
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Approve Rider "
+                  >
+                    <NavLink
+                      className="hover:text-green-600"
+                      to="/dashboard/approveRider"
+                    >
+                      <FaMotorcycle className="my-1.5 inline-block size-4" />
+                      <span className="is-drawer-close:hidden">
+                        Approve Rider
+                      </span>
+                    </NavLink>
+                  </li>
+                  {/* assign riders */}
+                  <li
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Assign Rider "
+                  >
+                    <NavLink
+                      className="hover:text-green-600"
+                      to="/dashboard/assignRider"
+                    >
+                  <PiPersonSimpleBikeBold className="my-1.5 inline-block size-4" />
+                      <span className="is-drawer-close:hidden">
+                        Assign Rider
+                      </span>
+                    </NavLink>
+                  </li>
+                  {/* users management */}
+                  <li
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Users Management "
+                  >
+                    <NavLink
+                      className="hover:text-green-600"
+                      to="/dashboard/usersManagement"
+                    >
+                      <FaUsers className="my-1.5 inline-block size-4" />
+                      <span className="is-drawer-close:hidden">
+                        Users Management
+                      </span>
+                    </NavLink>
+                  </li>
+                </>
+              )}
 
               {/* List item */}
 
